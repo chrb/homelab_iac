@@ -1,6 +1,3 @@
-variable "vsphere_user" {}
-variable "vsphere_password" {}
-
 provider "vsphere" {
   user           = "${var.vsphere_user}"
   password       = "${var.vsphere_password}"
@@ -34,8 +31,8 @@ data "vsphere_virtual_machine" "template" {
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
-resource "vsphere_virtual_machine" "docker_host" {
-  name             = "docker_host"
+resource "vsphere_virtual_machine" "dockerhost" {
+  name             = "dockerhost"
   resource_pool_id = "${data.vsphere_compute_cluster.cluster.resource_pool_id}"
   datastore_id     = "${data.vsphere_datastore.datastore.id}"
 
@@ -62,7 +59,7 @@ resource "vsphere_virtual_machine" "docker_host" {
 
     customize {
       linux_options {
-        host_name = "docker_host"
+        host_name = "dockerhost"
         domain    = "chrb.io"
       }
 
