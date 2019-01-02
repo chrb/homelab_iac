@@ -1,0 +1,29 @@
+---
+- name: Prepare docker host
+  hosts: docker_host
+
+  tasks:
+    - name: upgrade all packages
+      yum:
+        name: '*'
+        state: latest
+    - name: install docker dependencies
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - yum-utils
+        - device-mapper-persistent-data
+        - lvm2
+    - name: Add Docker CE repository
+      shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    - name: Install docker ce
+      yum:
+        name: docker-ce
+        state: latest
+    - name: Start docker-ce service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
